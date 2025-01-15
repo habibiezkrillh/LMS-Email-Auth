@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Librarian;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 
 class LibrarianController extends Controller
@@ -28,5 +29,15 @@ class LibrarianController extends Controller
     {
         $librarian->delete();
         return redirect()->route('librarians.index');
+    }
+
+    public function dashboard()
+    {
+        if (Session::get('auth_type') !== 'librarian') {
+            return redirect()->route('login');
+        }
+
+        $librarian = Librarian::find(Session::get('auth_user'));
+        return view('librarian.dashboard', compact('librarian'));
     }
 }

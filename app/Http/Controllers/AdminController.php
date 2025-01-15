@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -28,5 +29,15 @@ class AdminController extends Controller
     {
         $admin->delete();
         return redirect()->route('admins.index');
+    }
+
+    public function dashboard()
+    {
+        if (Session::get('auth_type') !== 'admin') {
+            return redirect()->route('login');
+        }
+
+        $admin = Admin::find(Session::get('auth_user'));
+        return view('admin.dashboard', compact('admin'));
     }
 }
