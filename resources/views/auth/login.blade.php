@@ -7,6 +7,17 @@
 </head>
 <body>
     <h1>Login</h1>
+    
+    @if ($errors->any())
+        <div style="color: red;">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form action="{{ route('login.process') }}" method="POST">
         @csrf
         <label for="email">Email:</label>
